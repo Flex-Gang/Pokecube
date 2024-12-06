@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>PokéCode</title>
+	<link rel="icon" type="image/x-icon" href="icon.ico">
+      </head> 
+   <body style="background-color: #f6f6f6; background-image: url('background.jpg');display: flex; justify-content: center; align-items: center;">
+      <div style="text-align: center; background-color: #ffffff; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; border-radius: 30px; border-style: solid; border-color: #c4c4c4; width: 500px; height: 550px;">
+         <div>
+            <img id="titre" width=50% src="logo.png" style="margin-top: 30px;">
+            <p>Attrapez des Pokémons et apprenez-en plus sur leur lien avec le réchauffement climatique !</p>
+            <button class="button-30" role="button" type="button" id="generer">Capturer
+               <ion-icon id="icon" class="icon" src="pokeball.svg" style="margin-left: 9px;"></ion-icon>
+            </button>
+
+
+         </div>
+         <div id="pokemondiv" style="position: absolute;top: 65%;left: 50%;transform: translate(-50%, -50%); width:230px; height:230px;  background-image: url('jsp.png'); background-repeat:  no-repeat; background-position: center; display: flex; justify-content: center; border-style:solid; border-radius: 30px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+            <img id="qr" alt="QR Code" style="width:100px; position: absolute;top: 50%;left: 50% height:100px; display: none; border-style: solid;" src="" >
+         </div>
+         <p id="description" style="margin-top: 280px;"></p>
+      </div>
+    </body>
+</html>
+<script>
+   const Image = document.getElementById("qr");
+   var Description = document.getElementById("description");
+   var MainDiv = document.getElementById("titre");
+   var Icon = document.getElementById("icon");
+
+   const Pokemons=
+   { 
+     Dracaufeu: "https://www.notre-environnement.gouv.fr/actualites/breves/article/l-inrae-alerte-sur-les-consequences-du-dereglement-climatique-sur-les-feux-de",
+     Dugtrio: "https://www.futura-sciences.com/planete/actualites/terre-scientifiques-revelent-rechauffement-climatique-secoue-terre-108961/",
+     Aquali: "https://fr.wikipedia.org/wiki/%C3%89l%C3%A9vation_du_niveau_de_la_mer",
+     Tornadus: "https://www.humanite.fr/environnement/catastrophe-climatique/le-potentiel-destructeur-des-ouragans-a-augmente-denviron-40-en-raison-du-rechauffement-climatique",
+     Articuno: "https://www.wwf.fr/dossiers/les-causes-et-consequences-de-la-fonte-des-glaces",
+     Lugia: "https://www.futura-sciences.com/planete/questions-reponses/changement-climatique-rechauffement-climatique-7-phenomenes-meteorologiques-extremes-vont-multiplier-16014/",
+     Seadra: "https://ocean-climate.org/sensibilisation/les-impacts-du-changement-climatique-sur-locean/",
+     Buizel: "https://www.worldvision.fr/climat-montee-des-eaux/",
+     Golduck: "https://www.ecologie.gouv.fr/politiques-publiques/origine-gestion-secheresse",
+     Tangela: "https://agriculture.gouv.fr/lagriculture-et-la-foret-une-partie-de-la-solution-pour-lutter-contre-le-changement-climatique",
+     Torterra: "https://www.adaptation-changement-climatique.gouv.fr/dossiers-thematiques/s-adapter-avec-la-nature/Biodiversite",
+   };
+   const PokemonsImages=[
+      "dracaufeu.png",
+      "dugtrio.png",
+      "aquali.png",
+      "tornadus.png",
+      "articuno.png",
+      "lugia.png",
+      "seadra.png",
+      "buizel.png",
+      "golduck.png",
+      "tangela.png",
+      "torterra.png"
+   ]
+   const PokemonsKeys = Object.keys(Pokemons);
+
+   function PokemonAleatoire()
+   {
+      var indexPokemon = Math.floor(Math.random() * PokemonsKeys.length);
+      var key = PokemonsKeys[indexPokemon];
+      return [PokemonsImages[indexPokemon], key, Pokemons[key]];
+   }
+
+   function Generer()
+   {
+      // div qui fait swing
+      MainDiv.classList.remove('shake');
+      void MainDiv.offsetWidth;
+      MainDiv.classList.add('shake');
+
+      // icon qui fait swing
+      Icon.classList.toggle('rotate');
+      setTimeout(() => {
+         Icon.classList.remove('rotate');
+      }, 500);
+
+      // pokemon
+      var pokemon = PokemonAleatoire();
+      Image.src = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(pokemon[2])}&size=250x250`;
+      if (Image.style.display == "none")
+      {
+         Image.style.display = "block";
+      }
+      document.getElementById("pokemondiv").style.backgroundImage = `url('pokemons/${pokemon[0]}')`;
+      // Image_Pokemon.style.display = "block";
+      Description.innerHTML = "Vous avez attrapé un <b>"+pokemon[1]+"</b> !";
+   }
+   document.getElementById('generer').addEventListener('click', Generer);
+</script>
+<style>
+   .button-30 {
+  align-items: center;
+  appearance: none;
+  background-color: #FCFCFD;
+  border-radius: 10px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #36395A;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "JetBrains Mono",monospace;
+  height: 48px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow .15s,transform .15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow,transform;
+  font-size: 18px;
+}
+
+.button-30:focus {
+  box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+}
+
+.button-30:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.button-30:active {
+  box-shadow: #D6D6E7 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
+.icon {
+   transition: transform 0.5s; /* Smooth rotation */
+}
+.rotate {
+   transform: rotate(360deg); /* Rotate 360 degrees */
+}
+
+.shake
+{
+   animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+   0% { transform: rotate(0deg) translateX(0); }
+   25% { transform: rotate(3deg) translateX(-2px); }
+   50% { transform: rotate(-3deg) translateX(2px); }
+   75% { transform: rotate(3deg) translateX(-2px); }
+   100% { transform: rotate(0deg) translateX(0); }
+}
+
+
+</style>
+
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
